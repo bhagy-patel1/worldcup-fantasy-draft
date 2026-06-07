@@ -10,11 +10,19 @@ export default function DraftOverlay({
   socket, roomId, roomState,
 }) {
   const visible = !!spinResult;
+  const [collapsed, setCollapsed] = useState(false);
 
   // Drawer height as % of screen — user can drag to resize
-  const [heightPct, setHeightPct] = useState(60);
+  const [heightPct, setHeightPct] = useState(55);
   const dragStartY = useRef(null);
   const dragStartH = useRef(null);
+
+  // Reset collapsed state when a new spin result arrives
+  const prevNation = useRef(null);
+  if (visible && spinResult.nation !== prevNation.current) {
+    prevNation.current = spinResult.nation;
+    if (collapsed) setCollapsed(false);
+  }
 
   const handleDragHandleMouseDown = useCallback((e) => {
     dragStartY.current = e.clientY ?? e.touches?.[0]?.clientY;
@@ -25,7 +33,7 @@ export default function DraftOverlay({
       if (clientY == null || dragStartY.current == null) return;
       const dy = dragStartY.current - clientY;
       const screenH = window.innerHeight;
-      const newH = Math.max(20, Math.min(90, dragStartH.current + (dy / screenH) * 100));
+      const newH = Math.max(20, Math.min(85, dragStartH.current + (dy / screenH) * 100));
       setHeightPct(newH);
     };
 
@@ -58,13 +66,50 @@ export default function DraftOverlay({
   const timerSec    = timeLeft != null ? String(timeLeft % 60).padStart(2, '0') : '';
   const activeName  = roomState?.players[roomState.turnQueueIndex]?.nickname;
 
+  // Collapsed pill — always shown when there's a spin result so user can reopen
+  if (visible && collapsed) {
+    return (
+      <div
+        className="absolute left-0 right-0 z-40 px-3"
+        style={{ bottom: '64px' }}
+      >
+        <button
+          onClick={() => setCollapsed(false)}
+          className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl"
+          style={{
+            background: `linear-gradient(90deg,${nationColor}33,${nationColor}18)`,
+            border: `1px solid ${nationColor}55`,
+            boxShadow: `0 -2px 20px ${nationColor}22`,
+          }}
+        >
+          <div className="flex items-center gap-2">
+            {visible && <FlagImg nation={spinResult.nation} size={24} style={{ borderRadius: '3px' }} />}
+            <span className="text-white font-black text-sm">{visible && spinResult.nation}</span>
+            <span className="text-xs px-2 py-0.5 rounded-full font-bold text-white/70"
+              style={{ background: `${nationColor}33` }}>
+              {visible && `${spinResult.draftPool.length} players`}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            {timeLeft != null && (
+              <span className="font-black text-sm tabular-nums" style={{ color: timerCol }}>
+                {timerMin}:{timerSec}
+              </span>
+            )}
+            <span className="text-white/50 text-xs">▲ Show</span>
+          </div>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div
       className="absolute left-0 right-0 z-40 flex flex-col pointer-events-none"
       style={{
-        bottom:      '56px',
-        height:      visible ? `calc(${heightPct}% - 56px)` : '0',
-        transition:  dragStartY.current ? 'none' : 'height 0.4s cubic-bezier(0.16,1,0.3,1)',
+        bottom:     '56px',
+        height:     visible ? `calc(${heightPct}% - 56px)` : '0',
+        transition: dragStartY.current ? 'none' : 'height 0.4s cubic-bezier(0.16,1,0.3,1)',
       }}
     >
       <div
@@ -79,17 +124,26 @@ export default function DraftOverlay({
           transition:    'opacity 0.2s ease',
         }}
       >
-        {/* ── Drag handle */}
+        {/* ── Drag handle + collapse button */}
         <div
-          className="shrink-0 flex justify-center items-center py-2 cursor-ns-resize select-none touch-none"
+          className="shrink-0 flex items-center justify-between px-3 py-2 cursor-ns-resize select-none touch-none"
           onMouseDown={handleDragHandleMouseDown}
           onTouchStart={handleDragHandleMouseDown}
-          title="Drag to resize"
         >
-          <div className="flex flex-col items-center gap-0.5">
+          <div className="flex flex-col items-center gap-0.5 flex-1">
             <div className="w-10 h-1 rounded-full" style={{ background: 'rgba(255,255,255,0.2)' }} />
             <div className="w-6 h-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.12)' }} />
           </div>
+          {/* Collapse button — stops propagation so drag doesn't fire */}
+          <button
+            onMouseDown={e => e.stopPropagation()}
+            onTouchStart={e => e.stopPropagation()}
+            onClick={() => setCollapsed(true)}
+            className="shrink-0 px-2.5 py-1 rounded-lg text-xs font-bold text-white/40 hover:text-white/70 transition-colors"
+            style={{ background: 'rgba(255,255,255,0.05)' }}
+          >
+            ▼ Hide
+          </button>
         </div>
 
         {/* ── Header */}

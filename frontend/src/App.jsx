@@ -330,14 +330,17 @@ export default function App() {
           </div>
         </div>
 
-        <DraftOverlay spinResult={spinResult} isMyTurn={isMyTurn} timeLeft={timeLeft} socket={socketRef.current} roomId={roomId} roomState={roomState} />
+        {/* Draft overlay — only shown on wheel tab so it doesn't block pitch/chat */}
+        {activeTab === 'wheel' && (
+          <DraftOverlay spinResult={spinResult} isMyTurn={isMyTurn} timeLeft={timeLeft} socket={socketRef.current} roomId={roomId} roomState={roomState} />
+        )}
 
         {/* Bottom tab bar */}
         <div className="shrink-0 flex border-t z-50 relative"
           style={{ background: '#0a0f1a', borderColor: 'rgba(255,255,255,0.08)' }}>
           {TABS.map(tab => {
             const isActive = activeTab === tab.id;
-            const hasAlert = tab.id === 'wheel' && isMyTurn && !spinResult;
+            const hasAlert = tab.id === 'wheel' && (isMyTurn && !spinResult || (spinResult && activeTab !== 'wheel'));
             return (
               <button
                 key={tab.id}
