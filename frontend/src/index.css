@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom pitch and card CSS variables */
+:root {
+  --pitch-green: #2d7a3a;
+  --pitch-light: #34a34a;
+  --pitch-line: rgba(255, 255, 255, 0.35);
+  --card-gold: #c8a84b;
+  --card-bg: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #0b2720, #04080b 68%);
+  color: #f0f0f0;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+/* Pitch surface and card styling */
+.pitch-surface {
+  background:
+    repeating-linear-gradient(
+      180deg,
+      #1a5c26 0%,
+      #1a5c26 10%,
+      #227632 10%,
+      #227632 20%
+    );
+  position: relative;
+}
+
+.pitch-lines ellipse,
+.pitch-lines line,
+.pitch-lines rect,
+.pitch-lines circle {
+  stroke: rgba(255,255,255,0.28);
+}
+
+.pitch-lines rect,
+.pitch-lines line,
+.pitch-lines ellipse,
+.pitch-lines circle {
+  vector-effect: non-scaling-stroke;
+}
+
+.pitch-lines {
+  mix-blend-mode: screen;
+}
+
+.player-card-glow {
+  box-shadow: 0 24px 80px -42px rgba(0, 0, 0, 0.7);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a6a;
+  border-radius: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a6a;
+  border-radius: 2px;
+}
