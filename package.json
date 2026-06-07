@@ -1,0 +1,13 @@
+{
+  "name": "wc-draft-game",
+  "version": "1.0.0",
+  "description": "WC Draft Game - monorepo root",
+  "scripts": {
+    "start": "cd backend && node src/server.js",
+    "build": "cd backend && npm install",
+    "install": "cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
