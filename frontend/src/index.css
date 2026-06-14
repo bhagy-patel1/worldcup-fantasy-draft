@@ -9,18 +9,36 @@
   --pitch-line: rgba(255, 255, 255, 0.35);
   --card-gold: #c8a84b;
   --card-bg: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  /* Mobile-safe full height — falls back to 100vh on browsers without dvh support */
+  --app-height: 100dvh;
 }
 
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  /* Prevent rubber-band scrolling from revealing blank area behind browser chrome */
+  overscroll-behavior: none;
+}
+
+body {
   background: radial-gradient(circle at top, #0b2720, #04080b 68%);
   color: #f0f0f0;
   font-family: 'Inter', system-ui, sans-serif;
   overflow: hidden;
+  /* Fill the true visual viewport on mobile (excludes browser toolbar) */
+  min-height: 100vh;
+  min-height: var(--app-height);
+}
+
+/* Full-height app container that respects mobile browser chrome */
+.app-shell {
+  height: 100vh;
+  height: var(--app-height);
 }
 
 /* Pitch surface and card styling */
@@ -56,20 +74,6 @@ body {
 
 .player-card-glow {
   box-shadow: 0 24px 80px -42px rgba(0, 0, 0, 0.7);
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a2e;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #4a4a6a;
-  border-radius: 2px;
 }
 
 /* Scrollbar styling */

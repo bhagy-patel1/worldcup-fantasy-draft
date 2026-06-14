@@ -208,7 +208,7 @@ export default function App() {
   // ── Loading / rejoining state
   if (!socketReady || rejoining) {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-3">
+      <div className="app-shell bg-gray-950 flex flex-col items-center justify-center gap-3">
         <div className="text-4xl animate-bounce">⚽</div>
         <p className="text-white text-lg font-semibold animate-pulse">
           {rejoining ? 'Rejoining your game...' : 'Connecting...'}
@@ -220,7 +220,7 @@ export default function App() {
   // ── Lobby
   if (phase === 'lobby') {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+      <div className="app-shell bg-gray-950 flex items-center justify-center px-4">
         <Lobby
           socket={socketRef.current}
           onJoined={(nickname) => {
@@ -234,7 +234,7 @@ export default function App() {
 
   // ── Game
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-gray-950 text-white">
+    <div className="app-shell flex flex-col overflow-hidden bg-gray-950 text-white">
 
       {/* Mobile top status bar */}
       <div

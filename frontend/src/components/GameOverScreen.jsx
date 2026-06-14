@@ -36,7 +36,7 @@ export default function GameOverScreen({ roomState, currentPlayer, socket, roomI
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col"
-      style={{ background: 'linear-gradient(180deg,#06090f 0%,#0a0f1c 100%)' }}>
+      style={{ background: 'linear-gradient(180deg,#06090f 0%,#0a0f1c 100%)', height: '100dvh' }}>
 
       {/* Header */}
       <div className="shrink-0 px-4 py-3 flex items-center justify-between border-b border-white/10"

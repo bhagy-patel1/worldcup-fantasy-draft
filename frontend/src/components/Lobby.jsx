@@ -67,7 +67,7 @@ export default function Lobby({ socket, onJoined }) {
   const flags = ['🇫🇷', '🇪🇸', '🏴󠁧󠁢󠁥󠁮󠁧󠁿', '🇩🇪', '🇧🇷', '🇵🇹', '🇦🇷', '🇧🇪', '🇺🇾', '🇭🇷', '🇨🇭', '🇲🇦', '🇨🇴'];
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gray-950 px-4 py-8">
+    <div className="app-shell w-full flex flex-col items-center justify-center bg-gray-950 px-4 py-8 overflow-y-auto">
       {/* Decorative flag banner */}
       <div className="mb-6 flex gap-2 text-2xl select-none" aria-hidden="true">
         {flags.map((flag, i) => (
