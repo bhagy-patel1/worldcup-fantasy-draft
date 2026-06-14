@@ -7,6 +7,7 @@ import ChatWindow from './components/ChatWindow';
 import DraftOverlay from './components/DraftOverlay';
 import TradeWindow from './components/TradeWindow';
 import GameOverScreen from './components/GameOverScreen';
+import LineupReviewOverlay from './components/LineupReviewOverlay';
 
 const TABS = [
   { id: 'pitch', label: 'Pitch', icon: '🏟️' },
@@ -53,6 +54,8 @@ export default function App() {
   const [activeTab,      setActiveTab]      = useState('wheel');
   const [rejoining,      setRejoining]      = useState(false);
   const [tradeOpen,      setTradeOpen]      = useState(false);
+  const [lineupReview,   setLineupReview]   = useState(false);
+  const [reviewEndsAt,   setReviewEndsAt]   = useState(null);
 
   const setRejoiningSync = (val) => {
     rejoiningRef.current = val;
@@ -154,6 +157,11 @@ export default function App() {
       // trade window stays open until explicitly closed
     });
 
+    socket.on('lineup_review_started', ({ endsAt }) => {
+      setLineupReview(true);
+      setReviewEndsAt(endsAt);
+    });
+
     socket.on('error', ({ message }) => {
       // Use ref to avoid stale closure — check if we were in the middle of rejoining
       if (rejoiningRef.current && (message.includes('not found') || message.includes('not found'))) {
@@ -172,7 +180,7 @@ export default function App() {
     return () => socket.disconnect();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Client-side countdown
+  // Client-side countdown (draft timer)
   useEffect(() => {
     clearInterval(timerRef.current);
     if (!roomState?.timerEndsAt) { setTimeLeft(null); return; }
@@ -282,6 +290,16 @@ export default function App() {
           currentPlayer={currentPlayer}
           socket={socketRef.current}
           roomId={roomId}
+        />
+      )}
+
+      {lineupReview && !roomState?.gameOver && (
+        <LineupReviewOverlay
+          roomState={roomState}
+          currentPlayer={currentPlayer}
+          socket={socketRef.current}
+          roomId={roomId}
+          endsAt={reviewEndsAt}
         />
       )}
 
