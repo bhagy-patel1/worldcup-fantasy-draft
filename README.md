@@ -1,6 +1,6 @@
 # 🏆 WC Draft Game
 
-A real-time multiplayer World Cup nation draft game. Players take turns spinning a wheel to land on a nation, then pick a footballer from that nation's squad to build their ultimate 15-player team.
+A real-time fun  multiplayer World Cup nation draft game. Players take turns spinning a wheel to land on a nation, then pick a footballer from that nation's squad to build their ultimate 15-player team.
 
 ---
 
